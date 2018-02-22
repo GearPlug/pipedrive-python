@@ -147,18 +147,277 @@ class Client:
         if token:
             self.token = token
 
+    def get_recent_changes(self, **kwargs):
+        """
+            This method Returns data about all recent changes occured after given timestamp. in kwarg must to send "since_timestamp" with this format: YYYY-MM-DD HH:MM:SS
+            :param kwargs:
+            :return:
+        """
+        if kwargs is not None:
+            url = "recents"
+            return self._get(url, **kwargs)
+
+    # Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
     def get_deals(self, **kwargs):
-        url = "{0}/deals".format(self.api_base_url)
+        url = "deals"
         return self._get(url, **kwargs)
 
     def create_deal(self, **kwargs):
-        url = "{0}/deals".format(self.api_base_url)
+        url = "deals"
         if kwargs is not None:
             params = {}
             params.update(kwargs)
             return self._post(url, json=params)
 
+    def update_deal(self, deal_id, **kwargs):
+        if deal_id is not None and kwargs is not None:
+            url = "deals/{0}".format(deal_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_deal(self, deal_id):
+        if deal_id is not None:
+            url = "deals/{0}".format(deal_id)
+            return self._delete(url)
+
     def duplicate_deal(self, deal_id):
         if deal_id is not None:
-            url = "{0}/deals/{1}/duplicate".format(self.api_base_url, deal_id)
+            url = "deals/{0}/duplicate".format(deal_id)
             return self._post(url)
+
+    def get_deal_details(self, deal_id):
+        if deal_id is not None:
+            url = "deals/{0}".format(deal_id)
+            return self._get(url)
+
+    def get_deals_by_name(self, params=None):
+        if params is not None:
+            url = "deals/find"
+            return self._get(url, params=params)
+
+    def get_deal_followers(self, deal_id):
+        if deal_id is not None:
+            url = "deals/{0}/followers".format(deal_id)
+            return self._get(url)
+
+    def add_follower_to_deal(self, deal_id, user_id):
+        if deal_id is not None and user_id is not None:
+            url = "deals/{0}/followers".format(deal_id)
+            return self._post(url, json=user_id)
+
+    def delete_follower_to_deal(self, deal_id, follower_id):
+        if deal_id is not None and follower_id is not None:
+            url = "deals/{0}/followers/{1}".format(deal_id, follower_id)
+            return self._delete(url)
+
+    def get_deal_participants(self, deal_id, **kwargs):
+        if deal_id is not None:
+            url = "deals/{0}/participants".format(deal_id)
+            return self._get(url, **kwargs)
+
+    def add_participants_to_deal(self, deal_id, participant_id):
+        if deal_id is not None and participant_id is not None:
+            url = "deals/{0}/participants".format(deal_id)
+            return self._post(url, json=participant_id)
+
+    def delete_participant_to_deal(self, deal_id, participant_id):
+        if deal_id is not None and participant_id is not None:
+            url = "deals/{0}/participants/{1}".format(deal_id, participant_id)
+            return self._delete(url)
+
+    def get_deal_activities(self, deal_id, **kwargs):
+        if deal_id is not None:
+            url = "deals/{0}/activities".format(deal_id)
+            return self._get(url, **kwargs)
+
+    def get_deal_mail_messages(self, deal_id, **kwargs):
+        if deal_id is not None:
+            url = "deals/{0}/mailMessages".format(deal_id)
+            return self._get(url, **kwargs)
+
+    def get_deal_products(self, deal_id, **kwargs):
+        if deal_id is not None:
+            url = "deals/{0}/products".format(deal_id)
+            return self._get(url, **kwargs)
+
+    # Notes section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Notes
+    def get_notes(self, note_id=None, **kwargs):
+        if note_id is not None:
+            url = "notes/{0}".format(note_id)
+        else:
+            url = "notes"
+        return self._get(url, **kwargs)
+
+    def create_note(self, **kwargs):
+        if kwargs is not None:
+            url = "notes"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_note(self, note_id, **kwargs):
+        if note_id is not None and kwargs is not None:
+            url = "notes/{0}".format(note_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_note(self, note_id):
+        if note_id is not None:
+            url = "notes/{0}".format(note_id)
+            return self._delete(url)
+
+    # Organizations section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
+    def get_organizations(self, **kwargs):
+        url = "organizations"
+        return self._get(url, **kwargs)
+
+    def create_organization(self, **kwargs):
+        if kwargs is not None:
+            url = "organizations"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_organization(self, data_id, **kwargs):
+        if data_id is not None:
+            url = "organizations/{0}".format(data_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_organization(self, data_id):
+        if data_id is not None:
+            url = "organizations/{0}".format(data_id)
+            return self._delete(url)
+
+    # Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
+    def get_persons(self, **kwargs):
+        url = "persons"
+        return self._get(url, **kwargs)
+
+    def get_persons_by_name(self, params=None):
+        if params is not None:
+            url = "persons/find"
+            return self._get(url, params=params)
+
+    def get_person_details(self, person_id):
+        if person_id is not None:
+            url = "persons/{0}".format(person_id)
+            return self._get(url)
+
+    def create_person(self, **kwargs):
+        if kwargs is not None:
+            url = "persons"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_person(self, data_id, **kwargs):
+        if data_id is not None and kwargs is not None:
+            url = "persons/{0}".format(data_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_person(self, data_id):
+        if data_id is not None:
+            url = "persons/{0}".format(data_id)
+            return self._delete(url)
+
+    def get_person_deals(self, person_id, **kwargs):
+        if person_id is not None:
+            url = "persons/{0}/deals".format(person_id)
+            return self._get(url, **kwargs)
+
+    # Products section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Products
+    def get_products(self, product_id=None, **kwargs):
+        if product_id is not None:
+            url = "products/{0}".format(product_id)
+        else:
+            url = "products"
+        return self._get(url, **kwargs)
+
+    def get_product_by_name(self, params=None):
+        if params is not None:
+            url = "products/find"
+            return self._get(url, params=params)
+
+    def create_product(self, **kwargs):
+        if kwargs is not None:
+            url = "products"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_product(self, product_id, **kwargs):
+        if product_id is not None and kwargs is not None:
+            url = "products/{0}".format(product_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_product(self, product_id):
+        if product_id is not None:
+            url = "products/{0}".format(product_id)
+            return self._delete(url)
+
+    def get_product_deal(self, product_id, **kwargs):
+        if product_id is not None:
+            url = "products/{0}/deals".format(product_id)
+            return self._get(url, **kwargs)
+
+    # Activities section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Activities
+    def get_activities(self, **kwargs):
+        url = "activities"
+        return self._get(url, **kwargs)
+
+    def get_activity_details(self, activity_id):
+        if activity_id is not None:
+            url = "activities/{0}".format(activity_id)
+            return self._get(url)
+
+    def create_activity(self, **kwargs):
+        if kwargs is not None:
+            url = "activities"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_activity(self, activity_id, **kwargs):
+        if activity_id is not None and kwargs is not None:
+            url = "activities/{0}".format(activity_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_activity(self, activity_id):
+        if activity_id is not None:
+            url = "activities/{0}".format(activity_id)
+            return self._delete(url)
+
+    # Webhook section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Webhooks
+    def get_hooks_subscription(self):
+        url = "webhooks"
+        return self._get(url)
+
+    def create_hook_subscription(self, subscription_url, event_action, event_object, **kwargs):
+        if subscription_url is not None and event_action is not None and event_object is not None:
+            args = {"subscription_url": subscription_url, "event_action": event_action, "event_object": event_object}
+            if kwargs is not None:
+                args.update(kwargs)
+            return self._post(endpoint='webhooks', json=args)
+        else:
+            raise Exception("The attributes necessary to create the webhook were not obtained.")
+
+    def delete_hook_subscription(self, hook_id):
+        if hook_id is not None:
+            url = "webhooks/{0}".format(hook_id)
+            return self._delete(url)
+        else:
+            raise Exception("The attributes necessary to delete the webhook were not obtained.")
+
+
+
+
