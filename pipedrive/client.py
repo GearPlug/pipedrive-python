@@ -191,10 +191,10 @@ class Client:
             url = "deals/{0}".format(deal_id)
             return self._get(url)
 
-    def get_deals_by_name(self, params=None):
-        if params is not None:
+    def get_deals_by_name(self, **kwargs):
+        if kwargs is not None:
             url = "deals/find"
-            return self._get(url, params=params)
+            return self._get(url, **kwargs)
 
     def get_deal_followers(self, deal_id):
         if deal_id is not None:
@@ -216,10 +216,10 @@ class Client:
             url = "deals/{0}/participants".format(deal_id)
             return self._get(url, **kwargs)
 
-    def add_participants_to_deal(self, deal_id, participant_id):
-        if deal_id is not None and participant_id is not None:
+    def add_participants_to_deal(self, deal_id, person_id):
+        if deal_id is not None and person_id is not None:
             url = "deals/{0}/participants".format(deal_id)
-            return self._post(url, json=participant_id)
+            return self._post(url, json=person_id)
 
     def delete_participant_to_deal(self, deal_id, participant_id):
         if deal_id is not None and participant_id is not None:
@@ -293,19 +293,17 @@ class Client:
             return self._delete(url)
 
     # Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
-    def get_persons(self, **kwargs):
-        url = "persons"
+    def get_persons(self, person_id=None, **kwargs):
+        if person_id is not None:
+            url = "persons/{0}".format(person_id)
+        else:
+            url = "persons"
         return self._get(url, **kwargs)
 
     def get_persons_by_name(self, params=None):
         if params is not None:
             url = "persons/find"
             return self._get(url, params=params)
-
-    def get_person_details(self, person_id):
-        if person_id is not None:
-            url = "persons/{0}".format(person_id)
-            return self._get(url)
 
     def create_person(self, **kwargs):
         if kwargs is not None:
@@ -369,14 +367,12 @@ class Client:
             return self._get(url, **kwargs)
 
     # Activities section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Activities
-    def get_activities(self, **kwargs):
-        url = "activities"
-        return self._get(url, **kwargs)
-
-    def get_activity_details(self, activity_id):
+    def get_activities(self, activity_id=None, **kwargs):
         if activity_id is not None:
             url = "activities/{0}".format(activity_id)
-            return self._get(url)
+        else:
+            url = "activities"
+        return self._get(url, **kwargs)
 
     def create_activity(self, **kwargs):
         if kwargs is not None:
@@ -386,7 +382,7 @@ class Client:
             return self._post(url, json=params)
 
     def update_activity(self, activity_id, **kwargs):
-        if activity_id is not None and kwargs is not None:
+        if activity_id is not None:
             url = "activities/{0}".format(activity_id)
             params = {}
             params.update(kwargs)
