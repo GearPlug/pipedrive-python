@@ -244,8 +244,6 @@ delete_hooks = client.delete_hook_subscription(hook_id="")
 
 ## Requirements
 - requests
-- base64 -- b64encode
-- urllib.parse -- urlencode
 
 ## Tests
 ```
