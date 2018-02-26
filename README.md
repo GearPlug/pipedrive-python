@@ -12,16 +12,18 @@ git+git://github.com/GearPlug/pipedrive-python
 from pipedrive.client import Client
 client = Client()
 ```
-- If on the contrary you will use it, send "oauth=True" in the main instance like this:
+- If on the contrary you will use it, send the "client_id", the "client secret" and the paramater "oauth=True" in the main instance like this:
 ```
 from pipedrive.client import Client
 client = Client('CLIENT_ID', 'CLIENT_SECRET', oauth=True)
 ```
+
 #### Set token
 And to make requests send the access token
 ```
 client.set_token(access_token)
 ```
+
 #### Get authorization url
 ```
 url = client.get_oauth_uri("REDIRECT_URL", "OPTIONAL - state")
