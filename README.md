@@ -7,9 +7,20 @@ git+git://github.com/GearPlug/pipedrive-python
 ```
 
 ## Usage
+If you are not going to use the authentication flow, just instance the library like this:
 ```
 from pipedrive.client import Client
-client = Client('CLIENT_ID', 'CLIENT_SECRET', 'OPTIONAL - access_token')
+client = Client()
+```
+If on the contrary you will use it, send "oauth=True" in the main instance like this:
+```
+from pipedrive.client import Client
+client = Client('CLIENT_ID', 'CLIENT_SECRET', oauth=True)
+```
+
+And to make requests send the access token
+```
+client.set_token(access_token)
 ```
 #### Get authorization url
 ```
@@ -24,11 +35,6 @@ token = client.exchange_code('REDIRECT_URL', 'CODE')
 #### Refresh token
 ```
 token = client.refresh_token('REFRESH TOKEN')
-```
-
-#### Set token
-```
-token = client.set_token('TOKEN')
 ```
 
 #### Get recent changes

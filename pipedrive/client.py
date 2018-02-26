@@ -7,14 +7,15 @@ class Client:
     flow_base_url = "https://oauth.pipedrive.com/oauth/"
     oauth_end = "authorize?"
     token_end = "token"
-    api_base_url = ""
-    example_url = "https://api-proxy.pipedrive.com"
+    api_base_url = "https://companydomain.pipedrive.com/"
+    api_version = "v1/"
     header = {"Accept": "application/json, */*", "content-type": "application/json"}
 
-    def __init__(self, client_id=None, client_secret=None, token=None):
+    def __init__(self, client_id=None, client_secret=None, oauth=False):
         self.client_id = client_id
         self.client_secret = client_secret
-        self.token = token
+        self.oauth = oauth
+        self.token = None
 
     def make_request(self, method, endpoint, data=None, json=None, **kwargs):
         """
@@ -26,9 +27,11 @@ class Client:
             :return:
         """
         if self.token:
-            self.header["Authorization"] = "Bearer " + self.token
-            url = '{0}{1}'.format(self.api_base_url, endpoint)
-
+            if self.oauth:
+                self.header["Authorization"] = "Bearer " + self.token
+                url = '{0}{1}{2}'.format(self.api_base_url, self.api_version, endpoint)
+            else:
+                url = '{0}{1}{2}?api_token={3}'.format(self.api_base_url, self.api_version, endpoint, self.token)
             if method == "get":
                 response = requests.request(method, url, headers=self.header, params=kwargs)
             else:
@@ -413,7 +416,3 @@ class Client:
             return self._delete(url)
         else:
             raise Exception("The attributes necessary to delete the webhook were not obtained.")
-
-
-
-
