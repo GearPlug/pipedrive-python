@@ -7,14 +7,14 @@ class Client:
     flow_base_url = "https://oauth.pipedrive.com/oauth/"
     oauth_end = "authorize?"
     token_end = "token"
-    api_base_url = "https://companydomain.pipedrive.com/"
     api_version = "v1/"
     header = {"Accept": "application/json, */*", "content-type": "application/json"}
 
-    def __init__(self, client_id=None, client_secret=None, oauth=False):
+    def __init__(self, api_base_url, client_id=None, client_secret=None, oauth=False):
         self.client_id = client_id
         self.client_secret = client_secret
         self.oauth = oauth
+        self.api_base_url = api_base_url
         self.token = None
 
     def make_request(self, method, endpoint, data=None, json=None, **kwargs):
