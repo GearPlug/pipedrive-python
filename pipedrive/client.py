@@ -49,9 +49,6 @@ class Client:
     def _delete(self, endpoint, **kwargs):
         return self.make_request('delete', endpoint, **kwargs)
 
-    def _patch(self, endpoint, data=None, json=None, **kwargs):
-        return self.make_request('patch', endpoint, data=data, json=json, **kwargs)
-
     def _put(self, endpoint, json=None, **kwargs):
         return self.make_request('put', endpoint, json=json, **kwargs)
 
@@ -160,9 +157,27 @@ class Client:
             url = "recents"
             return self._get(url, **kwargs)
 
+    def get_data(self, endpoint, **kwargs):
+        if endpoint != "":
+            return self._get(endpoint, **kwargs)
+
+    def get_specific_data(self, endpoint, data_id, **kwargs):
+        if endpoint != "":
+            url = "{0}/{1}".format(endpoint, data_id)
+            return self._get(url, **kwargs)
+
+    def create_data(self, endpoint, **kwargs):
+        if endpoint != "" and kwargs is not None:
+            params = {}
+            params.update(kwargs)
+            return self._post(endpoint, json=params)
+
     # Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
-    def get_deals(self, **kwargs):
-        url = "deals"
+    def get_deals(self, deal_id=None, **kwargs):
+        if deal_id is not None:
+            url = "deals/{0}".format(deal_id)
+        else:
+            url = "deals"
         return self._get(url, **kwargs)
 
     def create_deal(self, **kwargs):
@@ -272,8 +287,11 @@ class Client:
             return self._delete(url)
 
     # Organizations section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
-    def get_organizations(self, **kwargs):
-        url = "organizations"
+    def get_organizations(self, org_id=None, **kwargs):
+        if org_id is not None:
+            url = "organizations/{0}".format(org_id)
+        else:
+            url = "organizations"
         return self._get(url, **kwargs)
 
     def create_organization(self, **kwargs):

@@ -48,7 +48,10 @@ token = client.get_recent_changes(since_timestamp="YYYY-MM-DD HH:MM:SS")
 ### Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
 
 #### Get deals
+If you need a specific deal send the deal id, if you don't just call the method
 ```
+get_specific_deal = client.get_deals(deal_id="")
+
 get_deals = client.get_deals()
 ```
 
@@ -130,7 +133,7 @@ get_products_deal = client.get_deal_products(deal_id="")
 ### Notes section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Notes
 
 #### Get notes
-If you need a specific note send the note id, if you don't just call the method without send anything
+If you need a specific note send the note id, if you don't just call the method
 ```
 get_specific_note = client.get_notes(note_id="")
 
@@ -139,7 +142,7 @@ get_notes = client.get_notes()
 
 #### Add a note
 ```
-add_note = client.create_note(content="")
+add_note = client.create_note(content="", org_id="")
 ```
 
 #### Update a note
@@ -155,7 +158,10 @@ delete_note = client.delete_note(note_id="")
 ### Organizations section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
 
 #### Get organizations
+If you need a specific organization send the organization id, if you don't just call the method
 ```
+get_specific_organization = client.get_organizations(org_id="")
+
 get_organizations = client.get_organizations()
 ```
 
@@ -177,7 +183,7 @@ delete_organization = client.delete_organization(data_id="")
 ### Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
 
 #### Get persons
-If you need the details of a person send the person id, if you don't just call the method without send anything
+If you need the details of a person send the person id, if you don't just call the method
 ```
 get_details_person = client.get_persons(person_id="")
 
@@ -209,10 +215,46 @@ delete_persons = client.delete_person(data_id="")
 get_persons_deals = client.get_person_deals(person_id="")
 ```
 
+
+### Products section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Products
+
+#### Get products
+If you need a specific product send the product id, if you don't just call the method
+```
+get_specific_product = client.get_products(product_id="")
+
+get_products = client.get_products()
+```
+
+#### Get products by name
+```
+find_product = client.get_product_by_name(term="")
+```
+
+#### Create a product
+```
+add_product = client.create_product(name="")
+```
+
+#### Update a product
+```
+update_product = client.update_product(product_id="", name="")
+```
+
+#### Delete a product
+```
+delete_product = client.delete_product(product_id="")
+```
+
+#### Get deals where a product is attached to
+```
+get_product_deal = client.get_product_deal(product_id="")
+```
+
 ### Activities section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Activities
 
 #### Get activities
-If you need the activity details send the activity id, if you don't just call the method without send anything
+If you need the activity details send the activity id, if you don't just call the method
 ```
 get_details_activity = client.get_activities(activity_id="")
 
