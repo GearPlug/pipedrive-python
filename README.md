@@ -3,7 +3,7 @@ Pipedrive API wrapper for Pypedrive written in Python.
 
 ## Installing
 ```
-git+git://github.com/GearPlug/pipedrive-python
+pip install pipedrive-python-lib
 ```
 
 ## Usage
@@ -296,7 +296,12 @@ delete_hooks = client.delete_hook_subscription(hook_id="")
 ## Requirements
 - requests
 
-## Tests
+
+## Contributing
 ```
-pipedrive/test.py
+Fork it ( https://github.com/GearPlug/pipedrive-python/fork )
+Create your feature branch (git checkout -b my-new-feature)
+Commit your changes (git commit -am 'Add some feature')
+Push to the branch (git push origin my-new-feature)
+Create a new Pull Request
 ```
