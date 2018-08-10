@@ -434,3 +434,11 @@ class Client:
             return self._delete(url)
         else:
             raise Exception("The attributes necessary to delete the webhook were not obtained.")
+    
+    # Users section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Users
+    def get_users(self, user_id=None, **kwargs):
+        if user_id is not None:
+            url = "users/{}".format(user_id)
+        else:
+            url = "users"
+        return self._get(url, **kwargs)
