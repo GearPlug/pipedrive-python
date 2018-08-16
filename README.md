@@ -293,6 +293,13 @@ add_hook = client.create_hook_subscription(subscription_url="", event_action="",
 delete_hooks = client.delete_hook_subscription(hook_id="")
 ```
 
+### Users section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Users
+
+#### Get users
+```
+users = client.get_users(user_id="")
+```
+
 ## Requirements
 - requests
 
