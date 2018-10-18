@@ -172,6 +172,19 @@ class Client:
             params.update(kwargs)
             return self._post(endpoint, json=params)
 
+    # Pipeline section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
+    def get_pipelines(self, pipeline_id=None, **kwargs):
+        if pipeline_id is not None:
+            url = "pipelines/{0}".format(pipeline_id)
+        else:
+            url = "pipelines"
+        return self._get(url, **kwargs)
+
+    def get_pipeline_deals(self, pipeline_id, **kwargs):
+        if pipeline_id is not None:
+            url = "pipelines/{0}/deals".format(pipeline_id)
+        return self._get(url, **kwargs)
+
     # Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
     def get_deals(self, deal_id=None, **kwargs):
         if deal_id is not None:
