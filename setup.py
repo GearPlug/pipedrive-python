@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(name='pipedrive-python-lib',
-      version='0.1.2',
+      version='0.1.3',
       description='API wrapper for Pipedrive written in Python',
       long_description=read('README.md'),
       url='https://github.com/GearPlug/pipedrive-python',

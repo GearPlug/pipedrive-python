@@ -462,5 +462,5 @@ class Client:
         return self._get(url, **kwargs)
 
     def get_me(self, **kwargs):
-        url = "/users/me"
+        url = "users/me"
         return self._get(url, **kwargs)
