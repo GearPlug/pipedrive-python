@@ -1,6 +1,7 @@
-import requests
-from urllib.parse import urlencode, urlparse, quote_plus
 from base64 import b64encode
+from urllib.parse import urlencode
+
+import requests
 
 
 class Client:
@@ -117,7 +118,8 @@ class Client:
         if redirect_uri is not None and code is not None:
             url = self.flow_base_url + self.token_end
             authorization = '{0}:{1}'.format(self.client_id, self.client_secret)
-            header = {'Authorization': 'Basic {0}'.format(b64encode(authorization.encode('UTF-8')).decode('UTF-8'))}
+            header = {'content-type': 'application/x-www-form-urlencoded',
+                      'Authorization': 'Basic {0}'.format(b64encode(authorization.encode('UTF-8')).decode('UTF-8'))}
             args = {'grant_type': 'authorization_code', 'code': code, 'redirect_uri': redirect_uri}
             response = requests.post(url, headers=header, data=args)
             return self.parse_response(response)
@@ -127,13 +129,16 @@ class Client:
     def refresh_token(self, refresh_token):
         if refresh_token is not None:
             url = self.flow_base_url + self.token_end
+            authorization = '{0}:{1}'.format(self.client_id, self.client_secret)
+            header = {'content-type': 'application/x-www-form-urlencoded',
+                      'Authorization': 'Basic {0}'.format(b64encode(authorization.encode('UTF-8')).decode('UTF-8'))}
             data = {
                 'client_id': self.client_id,
                 'client_secret': self.client_secret,
                 'grant_type': "refresh_token",
                 'refresh_token': refresh_token,
             }
-            response = requests.post(url, data=data)
+            response = requests.post(url, headers=header, data=data)
             return self.parse_response(response)
         else:
             raise Exception("The attributes necessary to refresh the token were not obtained.")
@@ -447,11 +452,15 @@ class Client:
             return self._delete(url)
         else:
             raise Exception("The attributes necessary to delete the webhook were not obtained.")
-    
+
     # Users section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Users
     def get_users(self, user_id=None, **kwargs):
         if user_id is not None:
             url = "users/{}".format(user_id)
         else:
             url = "users"
+        return self._get(url, **kwargs)
+
+    def get_me(self, **kwargs):
+        url = "/users/me"
         return self._get(url, **kwargs)
