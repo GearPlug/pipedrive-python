@@ -5,7 +5,8 @@ import requests
 
 
 class Client:
-    flow_base_url = "https://oauth.pipedrive.com/oauth/"
+    oauth_flow_base_url = "https://oauth.pipedrive.com/oauth/"
+    oauth_api_base_url = "https://api-proxy.pipedrive.com/"
     oauth_end = "authorize?"
     token_end = "token"
     api_version = "v1/"
@@ -30,7 +31,7 @@ class Client:
         if self.token:
             if self.oauth:
                 self.header["Authorization"] = "Bearer " + self.token
-                url = '{0}{1}{2}'.format(self.api_base_url, self.api_version, endpoint)
+                url = '{0}{1}'.format(self.oauth_api_base_url, endpoint)
             else:
                 url = '{0}{1}{2}?api_token={3}'.format(self.api_base_url, self.api_version, endpoint, self.token)
             if method == "get":
@@ -108,7 +109,7 @@ class Client:
             }
             if state is not None:
                 params['state'] = state
-            url = self.flow_base_url + self.oauth_end + urlencode(params)
+            url = self.oauth_flow_base_url + self.oauth_end + urlencode(params)
             print(url)
             return url
         else:
@@ -116,7 +117,7 @@ class Client:
 
     def exchange_code(self, redirect_uri, code):
         if redirect_uri is not None and code is not None:
-            url = self.flow_base_url + self.token_end
+            url = self.oauth_flow_base_url + self.token_end
             authorization = '{0}:{1}'.format(self.client_id, self.client_secret)
             header = {'content-type': 'application/x-www-form-urlencoded',
                       'Authorization': 'Basic {0}'.format(b64encode(authorization.encode('UTF-8')).decode('UTF-8'))}
@@ -128,7 +129,7 @@ class Client:
 
     def refresh_token(self, refresh_token):
         if refresh_token is not None:
-            url = self.flow_base_url + self.token_end
+            url = self.oauth_flow_base_url + self.token_end
             authorization = '{0}:{1}'.format(self.client_id, self.client_secret)
             header = {'content-type': 'application/x-www-form-urlencoded',
                       'Authorization': 'Basic {0}'.format(b64encode(authorization.encode('UTF-8')).decode('UTF-8'))}
