@@ -32,7 +32,12 @@ class Client:
                 self.header["Authorization"] = "Bearer " + self.token
                 url = '{0}{1}{2}'.format(self.api_base_url, self.api_version, endpoint)
             else:
-                url = '{0}{1}{2}?api_token={3}'.format(self.api_base_url, self.api_version, endpoint, self.token)
+                # One of our child methods added a querystring already, build on it
+                if endpoint.find("?") > -1:
+                    url = '{0}{1}{2}&api_token={3}'.format(self.api_base_url, self.api_version, endpoint, self.token)
+                else:
+                    url = '{0}{1}{2}?api_token={3}'.format(self.api_base_url, self.api_version, endpoint, self.token)
+
             if method == "get":
                 response = requests.request(method, url, headers=self.header, params=kwargs)
             else:
@@ -332,11 +337,15 @@ class Client:
             return self._delete(url)
 
     # Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
-    def get_persons(self, person_id=None, **kwargs):
+    def get_persons(self, person_id=None, filter_id=None, **kwargs):
         if person_id is not None:
             url = "persons/{0}".format(person_id)
         else:
             url = "persons"
+
+        if filter_id is not None:
+            url += "?filter_id={}".format(filter_id)
+
         return self._get(url, **kwargs)
 
     def get_persons_by_name(self, params=None):
@@ -464,3 +473,4 @@ class Client:
     def get_me(self, **kwargs):
         url = "users/me"
         return self._get(url, **kwargs)
+
