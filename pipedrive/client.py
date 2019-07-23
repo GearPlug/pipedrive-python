@@ -178,6 +178,33 @@ class Client:
             params.update(kwargs)
             return self._post(endpoint, json=params)
 
+    # Filter section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Filters
+    def get_filters(self, filter_id=None, **kwargs):
+        if filter_id is not None:
+            url = "filters/{0}".format(filter_id)
+        else:
+            url = "filters"
+        return self._get(url, **kwargs)
+
+    def create_filter(self, **kwargs):
+        if kwargs is not None:
+            url = "filters"
+            params = {}
+            params.update(kwargs)
+            return self._post(url, json=params)
+
+    def update_filter(self, filter_id, **kwargs):
+        if filter_id is not None and kwargs is not None:
+            url = "filters/{0}".format(filter_id)
+            params = {}
+            params.update(kwargs)
+            return self._put(url, json=params)
+
+    def delete_filter(self, filter_id):
+        if filter_id is not None:
+            url = "filters/{0}".format(filter_id)
+            return self._delete(url)
+
     # Pipeline section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
     def get_pipelines(self, pipeline_id=None, **kwargs):
         if pipeline_id is not None:

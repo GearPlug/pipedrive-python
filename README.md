@@ -45,6 +45,30 @@ token = client.refresh_token('REFRESH TOKEN')
 token = client.get_recent_changes(since_timestamp="YYYY-MM-DD HH:MM:SS")
 ```
 
+### Filters section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Filters
+#### Get deals
+If you need a specific filter send the filter id, if you don't just call the method
+```
+get_specific_filter = client.get_filters(filter_id="")
+
+get_filters = client.get_filters()
+```
+
+#### Create filter
+```
+create_filter = client.create_filter(name="", conditions={}, type="")
+```
+
+#### Update filter
+```
+update_filter = client.update_filter(filter_id="", name="", conditions={}, type="")
+```
+
+#### Delete filter
+```
+delete_filter = client.delete_filter(filter_id="")
+```
+
 ### Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
 
 #### Get deals
