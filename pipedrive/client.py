@@ -46,6 +46,7 @@ class Client:
         else:
             raise Exception("To make petitions the token is necessary")
 
+    #TODO Add ability to handle paging from PipeDrive
     def _get(self, endpoint, data=None, **kwargs):
         return self.make_request('get', endpoint, data=data, **kwargs)
 
@@ -352,6 +353,11 @@ class Client:
         if params is not None:
             url = "persons/find"
             return self._get(url, params=params)
+
+    def get_person_fields_by_field_id(self, field_id, **kwargs):
+        url = "personFields/{0}".format(field_id)
+        return self._get(url, **kwargs)
+
 
     def create_person(self, **kwargs):
         if kwargs is not None:
