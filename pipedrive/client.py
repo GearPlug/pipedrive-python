@@ -46,9 +46,38 @@ class Client:
         else:
             raise Exception("To make petitions the token is necessary")
 
-    #TODO Add ability to handle paging from PipeDrive
-    def _get(self, endpoint, data=None, **kwargs):
-        return self.make_request('get', endpoint, data=data, **kwargs)
+
+    def _get(self, endpoint, data=None, get_all_pages=False, page_size=100, **kwargs):
+        page_num = 0
+        more_items = True
+        pd_cur_response = {}
+        pd_response = {}
+
+        if not get_all_pages:
+            pd_response = self.make_request('get', endpoint, data=data, **kwargs)
+        else:
+            while more_items:
+                query_string ='?limit={ps}&start={s}'.format(ps=page_size, s=page_num)
+
+                pd_cur_response = self.make_request('get', endpoint + query_string, data=data, **kwargs)
+                rAdditionalData = pd_cur_response['additional_data']
+
+                if page_num > 0:
+                    if pd_cur_response['data']:
+                        pd_response['data'].extend(pd_cur_response['data'])
+                else:
+                    pd_response = pd_cur_response
+
+                if rAdditionalData.get('pagination') and rAdditionalData['pagination'].get('more_items_in_collection'):
+                    more_items = bool(rAdditionalData['pagination']['more_items_in_collection'])
+                else:
+                    more_items = False
+
+                if more_items:
+                    page_num = int(rAdditionalData['pagination']['next_start'])
+                print('Next Start: {p}, More Items: {mi}'.format(p=page_num, mi=more_items))
+            # end while
+        return pd_response
 
     def _post(self, endpoint, data=None, json=None, **kwargs):
         return self.make_request('post', endpoint, data=data, json=json, **kwargs)
@@ -158,7 +187,7 @@ class Client:
         if token:
             self.token = token
 
-    def get_recent_changes(self, **kwargs):
+    def get_recent_changes(self, get_all_pages=False, page_size=500, **kwargs):
         """
             This method Returns data about all recent changes occured after given timestamp. in kwarg must to send "since_timestamp" with this format: YYYY-MM-DD HH:MM:SS
             :param kwargs:
@@ -166,7 +195,7 @@ class Client:
         """
         if kwargs is not None:
             url = "recents"
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def get_data(self, endpoint, **kwargs):
         if endpoint != "":
@@ -184,25 +213,25 @@ class Client:
             return self._post(endpoint, json=params)
 
     # Pipeline section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
-    def get_pipelines(self, pipeline_id=None, **kwargs):
+    def get_pipelines(self, pipeline_id=None, get_all_pages=False, page_size=500, **kwargs):
         if pipeline_id is not None:
             url = "pipelines/{0}".format(pipeline_id)
         else:
             url = "pipelines"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_pipeline_deals(self, pipeline_id, **kwargs):
+    def get_pipeline_deals(self, pipeline_id, get_all_pages=False, page_size=500, **kwargs):
         if pipeline_id is not None:
             url = "pipelines/{0}/deals".format(pipeline_id)
-        return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     # Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
-    def get_deals(self, deal_id=None, **kwargs):
+    def get_deals(self, deal_id=None, get_all_pages=False, page_size=500, **kwargs):
         if deal_id is not None:
             url = "deals/{0}".format(deal_id)
         else:
             url = "deals"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def create_deal(self, **kwargs):
         url = "deals"
@@ -233,15 +262,15 @@ class Client:
             url = "deals/{0}".format(deal_id)
             return self._get(url)
 
-    def get_deals_by_name(self, **kwargs):
+    def get_deals_by_name(self, get_all_pages=False, page_size=500, **kwargs):
         if kwargs is not None:
             url = "deals/find"
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_deal_followers(self, deal_id):
+    def get_deal_followers(self, deal_id, get_all_pages=False, page_size=500):
         if deal_id is not None:
             url = "deals/{0}/followers".format(deal_id)
-            return self._get(url)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size)
 
     def add_follower_to_deal(self, deal_id, user_id):
         if deal_id is not None and user_id is not None:
@@ -253,10 +282,10 @@ class Client:
             url = "deals/{0}/followers/{1}".format(deal_id, follower_id)
             return self._delete(url)
 
-    def get_deal_participants(self, deal_id, **kwargs):
+    def get_deal_participants(self, deal_id, get_all_pages=False, page_size=500, **kwargs):
         if deal_id is not None:
             url = "deals/{0}/participants".format(deal_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def add_participants_to_deal(self, deal_id, person_id):
         if deal_id is not None and person_id is not None:
@@ -268,28 +297,28 @@ class Client:
             url = "deals/{0}/participants/{1}".format(deal_id, participant_id)
             return self._delete(url)
 
-    def get_deal_activities(self, deal_id, **kwargs):
+    def get_deal_activities(self, deal_id, get_all_pages=False, page_size=500, **kwargs):
         if deal_id is not None:
             url = "deals/{0}/activities".format(deal_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_deal_mail_messages(self, deal_id, **kwargs):
+    def get_deal_mail_messages(self, deal_id, get_all_pages=False, page_size=500, **kwargs):
         if deal_id is not None:
             url = "deals/{0}/mailMessages".format(deal_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_deal_products(self, deal_id, **kwargs):
+    def get_deal_products(self, deal_id, get_all_pages=False, page_size=500, **kwargs):
         if deal_id is not None:
             url = "deals/{0}/products".format(deal_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     # Notes section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Notes
-    def get_notes(self, note_id=None, **kwargs):
+    def get_notes(self, note_id=None, get_all_pages=False, page_size=500, **kwargs):
         if note_id is not None:
             url = "notes/{0}".format(note_id)
         else:
             url = "notes"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def create_note(self, **kwargs):
         if kwargs is not None:
@@ -311,12 +340,13 @@ class Client:
             return self._delete(url)
 
     # Organizations section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
-    def get_organizations(self, org_id=None, **kwargs):
+    def get_organizations(self, org_id=None, get_all_pages=False, page_size=500, **kwargs):
         if org_id is not None:
             url = "organizations/{0}".format(org_id)
         else:
             url = "organizations"
-        return self._get(url, **kwargs)
+
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def create_organization(self, **kwargs):
         if kwargs is not None:
@@ -337,8 +367,10 @@ class Client:
             url = "organizations/{0}".format(data_id)
             return self._delete(url)
 
+    # TODO Add merge_organization ----
+
     # Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
-    def get_persons(self, person_id=None, filter_id=None, **kwargs):
+    def get_persons(self, person_id=None, filter_id=None, get_all_pages=False, page_size=500, **kwargs):
         if person_id is not None:
             url = "persons/{0}".format(person_id)
         else:
@@ -347,17 +379,16 @@ class Client:
         if filter_id is not None:
             url += "?filter_id={}".format(filter_id)
 
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_persons_by_name(self, params=None):
+    def get_persons_by_name(self, params=None, get_all_pages=False, page_size=500):
         if params is not None:
             url = "persons/find"
-            return self._get(url, params=params)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size)
 
-    def get_person_fields_by_field_id(self, field_id, **kwargs):
+    def get_person_fields_by_field_id(self, field_id, get_all_pages=False, page_size=500, **kwargs):
         url = "personFields/{0}".format(field_id)
-        return self._get(url, **kwargs)
-
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def create_person(self, **kwargs):
         if kwargs is not None:
@@ -378,23 +409,23 @@ class Client:
             url = "persons/{0}".format(data_id)
             return self._delete(url)
 
-    def get_person_deals(self, person_id, **kwargs):
+    def get_person_deals(self, person_id, get_all_pages=False, page_size=500, **kwargs):
         if person_id is not None:
             url = "persons/{0}/deals".format(person_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     # Products section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Products
-    def get_products(self, product_id=None, **kwargs):
+    def get_products(self, product_id=None, get_all_pages=False, page_size=500, **kwargs):
         if product_id is not None:
             url = "products/{0}".format(product_id)
         else:
             url = "products"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
-    def get_product_by_name(self, params=None):
+    def get_product_by_name(self, params=None, get_all_pages=False, page_size=500):
         if params is not None:
             url = "products/find"
-            return self._get(url, params=params)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size)
 
     def create_product(self, **kwargs):
         if kwargs is not None:
@@ -415,18 +446,19 @@ class Client:
             url = "products/{0}".format(product_id)
             return self._delete(url)
 
-    def get_product_deal(self, product_id, **kwargs):
+    def get_product_deal(self, product_id, get_all_pages=False, page_size=500, **kwargs):
         if product_id is not None:
             url = "products/{0}/deals".format(product_id)
-            return self._get(url, **kwargs)
+            return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     # Activities section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Activities
-    def get_activities(self, activity_id=None, **kwargs):
+    def get_activities(self, get_all_pages=False, page_size=500, activity_id=None, **kwargs):
         if activity_id is not None:
             url = "activities/{0}".format(activity_id)
         else:
             url = "activities"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
+
 
     def create_activity(self, **kwargs):
         if kwargs is not None:
@@ -469,12 +501,12 @@ class Client:
             raise Exception("The attributes necessary to delete the webhook were not obtained.")
 
     # Users section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Users
-    def get_users(self, user_id=None, **kwargs):
+    def get_users(self, user_id=None, get_all_pages=False, page_size=500, **kwargs):
         if user_id is not None:
             url = "users/{}".format(user_id)
         else:
             url = "users"
-        return self._get(url, **kwargs)
+        return self._get(url, data=None, get_all_pages=get_all_pages, page_size=page_size, **kwargs)
 
     def get_me(self, **kwargs):
         url = "users/me"
