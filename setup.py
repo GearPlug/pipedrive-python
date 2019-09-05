@@ -7,13 +7,14 @@ def read(fname):
 
 
 setup(name='pipedrive-python-lib',
-      version='0.1.3',
+      version='1.0.0',
       description='API wrapper for Pipedrive written in Python',
       long_description=read('README.md'),
+      long_description_content_type="text/markdown",
       url='https://github.com/GearPlug/pipedrive-python',
-      author='Yordy Gelvez',
-      author_email='yordy.gelvez@gmail.com',
-      license='GPL',
+      author='Miguel Ferrer',
+      author_email='ingferrermiguel@gmail.com',
+      license='MIT',
       packages=['pipedrive'],
       install_requires=[
           'requests',
