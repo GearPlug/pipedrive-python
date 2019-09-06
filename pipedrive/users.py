@@ -6,7 +6,7 @@ class Users(object):
         url = 'users/{}'.format(user_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_users(self, **kwargs):
+    def get_all_users(self, **kwargs):
         url = 'users'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
