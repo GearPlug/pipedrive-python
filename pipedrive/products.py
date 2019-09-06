@@ -2,11 +2,12 @@ class Products(object):
     def __init__(self, client):
         self._client = client
 
-    def get_products(self, product_id=None, **kwargs):
-        if product_id is not None:
-            url = 'products/{}'.format(product_id)
-        else:
-            url = 'products'
+    def get_product(self, product_id, **kwargs):
+        url = 'products/{}'.format(product_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_products(self, **kwargs):
+        url = 'products'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def get_product_by_name(self, **kwargs):
@@ -27,4 +28,8 @@ class Products(object):
 
     def get_product_deal(self, product_id, **kwargs):
         url = 'products/{}/deals'.format(product_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_product_fields(self, **kwargs):
+        url = 'productFields'
         return self._client._get(self._client.BASE_URL + url, **kwargs)

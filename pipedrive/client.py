@@ -20,7 +20,7 @@ class Client:
     BASE_URL = 'https://api-proxy.pipedrive.com/'
     OAUTH_BASE_URL = 'https://oauth.pipedrive.com/oauth/'
 
-    def __init__(self, client_id=None, client_secret=None):
+    def __init__(self, client_id, client_secret):
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = None

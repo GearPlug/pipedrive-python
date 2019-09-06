@@ -2,11 +2,12 @@ class Activities(object):
     def __init__(self, client):
         self._client = client
 
-    def get_activities(self, activity_id=None, **kwargs):
-        if activity_id is not None:
-            url = 'activities/{}'.format(activity_id)
-        else:
-            url = 'activities'
+    def get_activity(self, activity_id, **kwargs):
+        url = 'activities/{}'.format(activity_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_activities(self, **kwargs):
+        url = 'activities'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_activity(self, data, **kwargs):
@@ -20,3 +21,7 @@ class Activities(object):
     def delete_activity(self, activity_id, **kwargs):
         url = 'activities/{}'.format(activity_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
+
+    def get_activity_fields(self, **kwargs):
+        url = 'activityFields'
+        return self._client._get(self._client.BASE_URL + url, **kwargs)

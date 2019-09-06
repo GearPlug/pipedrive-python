@@ -2,11 +2,12 @@ class Deals(object):
     def __init__(self, client):
         self._client = client
 
-    def get_deals(self, deal_id=None, **kwargs):
-        if deal_id is not None:
-            url = 'deals/{}'.format(deal_id)
-        else:
-            url = 'deals'
+    def get_deal(self, deal_id, **kwargs):
+        url = 'deals/{}'.format(deal_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_deals(self, **kwargs):
+        url = 'deals'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_deal(self, data, **kwargs):
@@ -73,4 +74,8 @@ class Deals(object):
 
     def get_deal_products(self, deal_id, **kwargs):
         url = 'deals/{}/products'.format(deal_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_deal_fields(self, **kwargs):
+        url = 'dealFields'
         return self._client._get(self._client.BASE_URL + url, **kwargs)

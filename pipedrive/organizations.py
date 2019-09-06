@@ -2,11 +2,12 @@ class Organizations(object):
     def __init__(self, client):
         self._client = client
 
-    def get_organizations(self, org_id=None, **kwargs):
-        if org_id is not None:
-            url = 'organizations/{}'.format(org_id)
-        else:
-            url = 'organizations'
+    def get_organization(self, organization_id, **kwargs):
+        url = 'organizations/{}'.format(organization_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_organizations(self, **kwargs):
+        url = 'organizations'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_organization(self, data, **kwargs):
@@ -20,3 +21,7 @@ class Organizations(object):
     def delete_organization(self, organization_id, **kwargs):
         url = 'organizations/{}'.format(organization_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
+
+    def get_organization_fields(self, **kwargs):
+        url = 'organizationFields'
+        return self._client._get(self._client.BASE_URL + url, **kwargs)

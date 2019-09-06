@@ -2,11 +2,12 @@ class Notes(object):
     def __init__(self, client):
         self._client = client
 
-    def get_notes(self, note_id=None, **kwargs):
-        if note_id is not None:
-            url = 'notes/{}'.format(note_id)
-        else:
-            url = 'notes'
+    def get_note(self, note_id, **kwargs):
+        url = 'notes/{}'.format(note_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_notes(self, **kwargs):
+        url = 'notes'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_note(self, data, **kwargs):
@@ -20,3 +21,7 @@ class Notes(object):
     def delete_note(self, note_id, **kwargs):
         url = 'notes/{}'.format(note_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
+
+    def get_note_fields(self, **kwargs):
+        url = 'noteFields'
+        return self._client._get(self._client.BASE_URL + url, **kwargs)

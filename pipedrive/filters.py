@@ -2,11 +2,12 @@ class Filters(object):
     def __init__(self, client):
         self._client = client
 
-    def get_filters(self, filter_id=None, **kwargs):
-        if filter_id is not None:
-            url = 'filters/{}'.format(filter_id)
-        else:
-            url = 'filters'
+    def get_filter(self, filter_id, **kwargs):
+        url = 'filters/{}'.format(filter_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_all_filters(self, **kwargs):
+        url = 'filters'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_filter(self, data, **kwargs):
