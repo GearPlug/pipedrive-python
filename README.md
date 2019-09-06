@@ -1,5 +1,6 @@
 # pipedrive-python
-Pipedrive API wrapper for Pypedrive written in Python.
+
+pipedrive-python is an API wrapper for Pipedrive written in Python.
 
 ## Installing
 ```
@@ -7,27 +8,19 @@ pip install pipedrive-python-lib
 ```
 
 ## Usage
-- If you are not going to use the authentication flow, just send the "pipedrive company domain" and instance the library like this:
+
+#### Client instantiation
 ```
 from pipedrive.client import Client
-client = Client(api_base_url='https://companydomain.pipedrive.com/')
+
+client = Client('CLIENT_ID', 'CLIENT_SECRET')
 ```
 
-- If on the contrary you will use it, send the "pipedrive company domain", the "client_id", the "client secret" and the parameter "oauth=True" in the main instance like this:
-```
-from pipedrive.client import Client
-client = Client(api_base_url='https://companydomain.pipedrive.com/', 'CLIENT_ID', 'CLIENT_SECRET', oauth=True)
-```
-
-#### Set token
-And to make requests send the access token
-```
-client.set_token(access_token)
-```
+### OAuth 2.0
 
 #### Get authorization url
 ```
-url = client.get_oauth_uri("REDIRECT_URL", "OPTIONAL - state")
+url = client.authorization_url('REDIRECT_URL')
 ```
 
 #### Exchange the code for an access token
@@ -35,293 +28,456 @@ url = client.get_oauth_uri("REDIRECT_URL", "OPTIONAL - state")
 token = client.exchange_code('REDIRECT_URL', 'CODE')
 ```
 
+#### Set access token in the library
+```
+client.set_access_token('ACCESS_TOKEN')
+```
+
 #### Refresh token
 ```
-token = client.refresh_token('REFRESH TOKEN')
+token = client.refresh_token('REFRESH_TOKEN')
 ```
 
-#### Get recent changes
+### Activities 
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Activities
+
+#### Get an activity
 ```
-token = client.get_recent_changes(since_timestamp="YYYY-MM-DD HH:MM:SS")
+response = client.activities.get_activity('ACTIVITY_ID')
 ```
 
-### Filters section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Filters
-#### Get deals
-If you need a specific filter send the filter id, if you don't just call the method
+#### Get all activities
 ```
-get_specific_filter = client.get_filters(filter_id="")
-
-get_filters = client.get_filters()
-```
-
-#### Create filter
-```
-create_filter = client.create_filter(name="", conditions={}, type="")
-```
-
-#### Update filter
-```
-update_filter = client.update_filter(filter_id="", name="", conditions={}, type="")
-```
-
-#### Delete filter
-```
-delete_filter = client.delete_filter(filter_id="")
-```
-
-### Deals section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Deals
-
-#### Get deals
-If you need a specific deal send the deal id, if you don't just call the method
-```
-get_specific_deal = client.get_deals(deal_id="")
-
-get_deals = client.get_deals()
-```
-
-#### Create deal
-```
-create_deal = client.create_deal(title="")
-```
-
-#### Update deal
-```
-update_deal = client.update_deal(deal_id="")
-```
-
-#### Delete deal
-```
-delete_deal = client.delete_deal(deal_id="")
-```
-
-#### Duplicate deal
-```
-duplicate_deal = client.duplicate_deal(deal_id="")
-```
-
-#### Get details of a deal
-```
-details_deal = client.get_deal_details(deal_id="")
-```
-
-#### Find deals by name
-```
-find_deal = client.get_deals_by_name(term="")
-```
-
-#### Get followers of a deal
-```
-followers_deal = client.get_deal_followers(deal_id="")
-```
-
-#### Add a follower to a deal
-```
-add_follower_deal = client.add_follower_to_deal(deal_id="", user_id="")
-```
-
-#### Delete a follower from a deal
-```
-delete_followers_deal = client.delete_follower_to_deal(deal_id="", follower_id="")
-```
-
-#### Get participants of a deal
-```
-get_participants_deal = client.get_deal_participants(deal_id="")
-```
-
-#### Add a participant to a deal
-```
-add_participants_deal = client.add_participants_to_deal(deal_id="", person_id="")
-```
-
-#### Delete a participant from a deal
-```
-delete_participants_deal = client.delete_participant_to_deal(deal_id="", participant_id="")
-```
-
-#### Get activities associated with a deal
-```
-get_activities_deal = client.get_deal_activities(deal_id="")
-```
-
-#### Get mail messages associated with a deal
-```
-get_messages_deal = client.get_deal_mail_messages(deal_id="")
-```
-
-#### Get products attached to a deal
-```
-get_products_deal = client.get_deal_products(deal_id="")
-```
-
-### Notes section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Notes
-
-#### Get notes
-If you need a specific note send the note id, if you don't just call the method
-```
-get_specific_note = client.get_notes(note_id="")
-
-get_notes = client.get_notes()
-```
-
-#### Add a note
-```
-add_note = client.create_note(content="", org_id="")
-```
-
-#### Update a note
-```
-update_note = client.update_note(note_id="", content="")
-```
-
-#### Delete a note
-```
-delete_note = client.delete_note(note_id="")
-```
-
-### Organizations section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
-
-#### Get organizations
-If you need a specific organization send the organization id, if you don't just call the method
-```
-get_specific_organization = client.get_organizations(org_id="")
-
-get_organizations = client.get_organizations()
-```
-
-#### Add organization
-```
-add_organization = client.create_organization(name="")
-```
-
-#### Update organization
-```
-update_organization = client.update_organization(data_id="", name="")
-```
-
-#### Delete an organization
-```
-delete_organization = client.delete_organization(data_id="")
-```
-
-### Persons section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Persons
-
-#### Get persons
-If you need the details of a person send the person id, if you don't just call the method
-```
-get_details_person = client.get_persons(person_id="")
-
-get_persons = client.get_persons()
-```
-
-#### Get persons by name
-```
-find_persons = client.get_persons_by_name(term="")
-```
-
-#### Create person
-```
-add_persons = client.create_person(name="")
-```
-
-#### Update person
-```
-update_persons = client.update_person(data_id="", name="")
-```
-
-#### Delete person
-```
-delete_persons = client.delete_person(data_id="")
-```
-
-#### Get deals associated with a person
-```
-get_persons_deals = client.get_person_deals(person_id="")
-```
-
-
-### Products section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Products
-
-#### Get products
-If you need a specific product send the product id, if you don't just call the method
-```
-get_specific_product = client.get_products(product_id="")
-
-get_products = client.get_products()
-```
-
-#### Get products by name
-```
-find_product = client.get_product_by_name(term="")
-```
-
-#### Create a product
-```
-add_product = client.create_product(name="")
-```
-
-#### Update a product
-```
-update_product = client.update_product(product_id="", name="")
-```
-
-#### Delete a product
-```
-delete_product = client.delete_product(product_id="")
-```
-
-#### Get deals where a product is attached to
-```
-get_product_deal = client.get_product_deal(product_id="")
-```
-
-### Activities section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Activities
-
-#### Get activities
-If you need the activity details send the activity id, if you don't just call the method
-```
-get_details_activity = client.get_activities(activity_id="")
-
-get_activities = client.get_activities()
+response = client.activities.get_all_activities()
 ```
 
 #### Create an activity
 ```
-add_activity = client.create_activity(subject="", type="")
+data = {
+    'subject': '',
+    'type': ''
+}
+response = client.activities.create_activity(data)
 ```
 
 #### Update an activity
 ```
-edit_activity = client.update_activity(activity_id="")
+data = {
+    'subject': '',
+    'type': ''
+}
+response = client.activities.update_activity('ACTIVITY_ID', data)
 ```
 
 #### Delete an activity
 ```
-delete_activity = client.delete_activity(activity_id="")
+response = client.activities.delete_activity('ACTIVITY_ID')
 ```
 
-### Webhook section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Webhooks
+#### Get activity fields
+```
+response = client.activities.get_activity_fields()
+```
+
+### Deals
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Deals
+
+#### Get a deal
+```
+response = client.deals.get_deal('DEAL_ID')
+```
+
+#### Get all deals
+```
+response = client.deals.get_all_deals()
+```
+
+#### Create deal
+```
+data = {
+    'title': ''
+}
+response = client.deals.create_deal(data)
+```
+
+#### Update deal
+```
+data = {
+    'title': ''
+}
+response = client.deals.update_deal('DEAL_ID', data)
+```
+
+#### Delete deal
+```
+response = client.deals.delete_deal('DEAL_ID')
+```
+
+#### Duplicate deal
+```
+response = client.deals.duplicate_deal('DEAL_ID')
+```
+
+#### Get details of a deal
+```
+response = client.deals.get_deal_details('DEAL_ID')
+```
+
+#### Find deals by name
+```
+params = {
+    'term': ''
+}
+response = client.deals.get_deals_by_name(params=params)
+```
+
+#### Get followers of a deal
+```
+response = client.deals.get_deal_followers('DEAL_ID')
+```
+
+#### Add a follower to a deal
+```
+response = client.deals.add_follower_to_deal('DEAL_ID', 'USER_ID')
+```
+
+#### Delete a follower from a deal
+```
+response = client.deals.delete_follower_to_deal('DEAL_ID', 'FOLLOWER_ID')
+```
+
+#### Get participants of a deal
+```
+response = client.deals.get_deal_participants('DEAL_ID')
+```
+
+#### Add a participant to a deal
+```
+response = client.deals.add_participants_to_deal('DEAL_ID', 'PERSON_ID')
+```
+
+#### Delete a participant from a deal
+```
+response = client.deals.delete_participant_to_deal('DEAL_ID', 'PARTICIPANT_ID')
+```
+
+#### Get activities associated with a deal
+```
+response = client.deals.get_deal_activities('DEAL_ID')
+```
+
+#### Get mail messages associated with a deal
+```
+response = client.deals.get_deal_mail_messages('DEAL_ID')
+```
+
+#### Get products attached to a deal
+```
+response = client.deals.get_deal_products('DEAL_ID')
+```
+
+#### Get deal fields
+```
+response = client.deals.get_deal_fields()
+```
+
+### Filters
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Filters
+
+#### Get a filter
+```
+response = client.filters.get_filter('FILTER_ID')
+```
+
+#### Get all filters
+```
+response = client.filters.get_all_filters()
+```
+
+#### Create filter
+```
+data = {
+    'name': '', 
+    'conditions': {},
+    'type': ''
+}
+response = client.filters.create_filter(data)
+```
+
+#### Update filter
+```
+data = {
+    'name': '', 
+    'conditions': {},
+    'type': ''
+}
+response = client.filters.update_filter('FILTER_ID', data)
+```
+
+#### Delete filter
+```
+response = client.filters.delete_filter('FILTER_ID')
+```
+
+### Notes
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Notes
+
+#### Get a note
+```
+response = client.notes.get_note('NOTE_ID')
+```
+
+#### Get all notes
+```
+response = client.notes.get_all_notes()
+```
+
+#### Add a note
+```
+data = {
+    'content': ''
+}
+response = client.notes.create_note(data)
+```
+
+#### Update a note
+```
+data = {
+    'content': ''
+}
+response = client.notes.update_note('NOTE_ID', data)
+```
+
+#### Delete a note
+```
+response = client.notes.delete_note('NOTE_ID')
+```
+
+#### Get note fields
+```
+response = client.notes.get_note_fields()
+```
+
+### Organizations
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
+
+#### Get an organization
+```
+response = client.organizations.get_organization('ORGANIZATION_ID')
+```
+
+#### Get all organizations
+```
+response = client.organizations.get_all_organizations()
+```
+
+#### Add organization
+```
+data = {
+    'name': ''
+}
+response = client.organizations.create_organization(data)
+```
+
+#### Update organization
+```
+data = {
+    'name': ''
+}
+response = client.organizations.update_organization('ORGANIZATION_ID', data)
+```
+
+#### Delete an organization
+```
+response = client.organizations.delete_organization('ORGANIZATION_ID')
+```
+
+#### Get organization fields
+```
+response = client.organizations.get_organization_fields()
+```
+
+### Persons 
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Persons
+
+#### Get a person
+```
+response = client.persons.get_person('PERSON_ID')
+```
+
+#### Get all persons
+```
+response = client.persons.get_all_persons()
+```
+
+#### Get persons by name
+```
+params = {
+    'term': ''
+}
+response = client.persons.get_persons_by_name(params=params)
+```
+
+#### Create person
+```
+data = {
+    'name': ''
+}
+response = client.persons.create_person(data)
+```
+
+#### Update person
+```
+data = {
+    'name': ''
+}
+response = client.persons.update_person('PERSON_ID', data)
+```
+
+#### Delete person
+```
+response = client.persons.delete_person('PERSON_ID')
+```
+
+#### Get deals associated with a person
+```
+response = client.persons.get_person_deals('PERSON_ID')
+```
+
+#### Get person fields
+```
+response = client.persons.get_person_fields()
+```
+
+### Pipelines
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
+
+#### Get a pipeline
+```
+response = client.pipelines.get_pipeline('PIPELINE_ID')
+```
+
+#### Get all pipelines
+```
+response = client.pipelines.get_all_pipelines()
+```
+
+#### Get deals attached to a pipeline
+```
+response = client.pipelines.get_pipeline_deals()
+```
+
+### Products
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Products
+
+#### Get a product
+```
+response = client.products.get_product('PRODUCT_ID')
+```
+
+#### Get all products
+```
+response = client.products.get_all_products()
+```
+
+#### Get products by name
+```
+params = {
+    'term': ''
+}
+response = client.products.get_product_by_name(params=params)
+```
+
+#### Create a product
+```
+data = {
+    'name': ''
+}
+response = client.products.create_product(data)
+```
+
+#### Update a product
+```
+data = {
+    'name': ''
+}
+response = client.products.update_product('PRODUCT_ID', data)
+```
+
+#### Delete a product
+```
+response = client.products.delete_product('PRODUCT_ID')
+```
+
+#### Get deals where a product is attached to
+```
+response = client.products.get_product_deal('PRODUCT_ID')
+```
+
+#### Get product fields
+```
+response = client.products.get_product_fields()
+```
+
+### Recents
+
+#### Get recent changes
+```
+params = {
+    'since_timestamp': 'YYYY-MM-DD HH:MM:SS'
+}
+response = client.recents.get_recent_changes(params=params)
+```
+
+### Users 
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Users
+
+#### Get an user
+```
+response = client.users.get_users('USER_ID')
+```
+
+#### Get all users
+```
+response = client.users.get_all_users()
+```
+
+#### Get me
+```
+response = client.users.get_me()
+```
+
+### Webhook 
+
+API docs: https://developers.pipedrive.com/docs/api/v1/#!/Webhooks
 
 #### Get webhooks
 ```
-get_hooks = client.get_hooks_subscription()
+response = client.webhooks.get_hooks_subscription()
 ```
 
 #### Add webhook
 ```
-add_hook = client.create_hook_subscription(subscription_url="", event_action="", event_object="")
+data = {
+    'subscription_url': '',
+    'event_action': '',
+    'event_object': ''
+}
+response = client.webhooks.create_hook_subscription(data)
 ```
 
 #### Delete webhook
 ```
-delete_hooks = client.delete_hook_subscription(hook_id="")
-```
-
-### Users section, see the api documentation: https://developers.pipedrive.com/docs/api/v1/#!/Users
-
-#### Get users
-```
-users = client.get_users(user_id="")
+response = client.webhooks.delete_hook_subscription('HOOK_ID')
 ```
 
 ## Requirements
