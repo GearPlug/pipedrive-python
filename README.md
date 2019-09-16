@@ -9,14 +9,14 @@ pip install pipedrive-python-lib
 
 ## Usage
 
+### Using this library with OAuth 2.0
+
 #### Client instantiation
 ```
 from pipedrive.client import Client
 
 client = Client('CLIENT_ID', 'CLIENT_SECRET')
 ```
-
-### OAuth 2.0
 
 #### Get authorization url
 ```
@@ -36,6 +36,20 @@ client.set_access_token('ACCESS_TOKEN')
 #### Refresh token
 ```
 token = client.refresh_token('REFRESH_TOKEN')
+```
+
+### Using this library with API Token
+
+#### Client instantiation
+```
+from pipedrive.client import Client
+
+client = Client(domain='https://companydomain.pipedrive.com/')
+```
+
+#### Set API token in the library
+```
+client.set_api_token('API_TOKEN')
 ```
 
 ### Activities 
