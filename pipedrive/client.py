@@ -20,10 +20,11 @@ class Client:
     BASE_URL = 'https://api-proxy.pipedrive.com/'
     OAUTH_BASE_URL = 'https://oauth.pipedrive.com/oauth/'
 
-    def __init__(self, client_id, client_secret):
+    def __init__(self, client_id=None, client_secret=None, domain=None):
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = None
+        self.api_token = None
         self.activities = Activities(self)
         self.deals = Deals(self)
         self.filters = Filters(self)
@@ -35,6 +36,11 @@ class Client:
         self.recents = Recents(self)
         self.users = Users(self)
         self.webhooks = Webhooks(self)
+
+        if domain:
+            if not domain.endswith('/'):
+                domain += '/'
+            self.BASE_URL = domain + 'v1/'
 
     def authorization_url(self, redirect_uri, state=None):
         params = {
@@ -65,6 +71,9 @@ class Client:
     def set_access_token(self, access_token):
         self.access_token = access_token
 
+    def set_api_token(self, api_token):
+        self.api_token = api_token
+
     def _get(self, url, **kwargs):
         return self._request('get', url, **kwargs)
 
@@ -77,11 +86,18 @@ class Client:
     def _delete(self, url, **kwargs):
         return self._request('delete', url, **kwargs)
 
-    def _request(self, method, url, headers=None, **kwargs):
-        _headers = {'Authorization': 'Bearer {}'.format(self.access_token)}
+    def _request(self, method, url, headers=None, params=None, **kwargs):
+        _headers = {}
+        _params = {}
+        if self.access_token:
+            _headers['Authorization'] = 'Bearer {}'.format(self.access_token)
+        if self.api_token:
+            _params['api_token'] = self.api_token
         if headers:
             _headers.update(headers)
-        return self._parse(requests.request(method, url, headers=_headers, **kwargs))
+        if params:
+            _params.update(params)
+        return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
 
     def _parse(self, response):
         status_code = response.status_code
