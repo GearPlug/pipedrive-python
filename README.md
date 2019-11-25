@@ -457,7 +457,7 @@ API docs: https://developers.pipedrive.com/docs/api/v1/#!/Users
 
 #### Get an user
 ```
-response = client.users.get_users('USER_ID')
+response = client.users.get_user('USER_ID')
 ```
 
 #### Get all users
