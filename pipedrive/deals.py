@@ -10,6 +10,10 @@ class Deals(object):
         url = 'deals'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
+    def get_all_deals_with_filter(self, filter_id, **kwargs):
+        url = 'deals?filter_id={}'.format(filter_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
     def create_deal(self, data, **kwargs):
         url = 'deals'
         return self._client._post(self._client.BASE_URL + url, json=data, **kwargs)

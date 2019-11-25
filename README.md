@@ -108,6 +108,11 @@ response = client.deals.get_deal('DEAL_ID')
 response = client.deals.get_all_deals()
 ```
 
+#### Get all deals based on filter
+```
+response = client.deals.get_all_deals_with_filter('FILTER_ID')
+```
+
 #### Create deal
 ```
 data = {
