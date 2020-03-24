@@ -6,9 +6,9 @@ class Filters(object):
         url = 'filters/{}'.format(filter_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_filters(self, **kwargs):
+    def get_all_filters(self, params=None, **kwargs):
         url = 'filters'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_filter(self, data, **kwargs):
         url = 'filters'
