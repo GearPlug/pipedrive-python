@@ -6,9 +6,9 @@ class Notes(object):
         url = 'notes/{}'.format(note_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_notes(self, **kwargs):
+    def get_all_notes(self, params=None, **kwargs):
         url = 'notes'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_note(self, data, **kwargs):
         url = 'notes'
@@ -22,6 +22,6 @@ class Notes(object):
         url = 'notes/{}'.format(note_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
 
-    def get_note_fields(self, **kwargs):
+    def get_note_fields(self, params=None, **kwargs):
         url = 'noteFields'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)

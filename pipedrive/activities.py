@@ -6,9 +6,9 @@ class Activities(object):
         url = 'activities/{}'.format(activity_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_activities(self, **kwargs):
+    def get_all_activities(self, params=None, **kwargs):
         url = 'activities'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_activity(self, data, **kwargs):
         url = 'activities'
@@ -22,6 +22,6 @@ class Activities(object):
         url = 'activities/{}'.format(activity_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
 
-    def get_activity_fields(self, **kwargs):
+    def get_activity_fields(self, params=None, **kwargs):
         url = 'activityFields'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)

@@ -76,8 +76,8 @@ class Client:
     def set_api_token(self, api_token):
         self.api_token = api_token
 
-    def _get(self, url, **kwargs):
-        return self._request('get', url, **kwargs)
+    def _get(self, url, params=None, **kwargs):
+        return self._request('get', url, params=params, **kwargs)
 
     def _post(self, url, **kwargs):
         return self._request('post', url, **kwargs)

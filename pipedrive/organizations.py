@@ -6,9 +6,9 @@ class Organizations(object):
         url = 'organizations/{}'.format(organization_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_organizations(self, **kwargs):
+    def get_all_organizations(self, params=None, **kwargs):
         url = 'organizations'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_organization(self, data, **kwargs):
         url = 'organizations'
@@ -22,9 +22,9 @@ class Organizations(object):
         url = 'organizations/{}'.format(organization_id)
         return self._client._delete(self._client.BASE_URL + url, **kwargs)
 
-    def get_organization_fields(self, **kwargs):
+    def get_organization_fields(self, params=None, **kwargs):
         url = 'organizationFields'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def find_organization_by_name(self, **kwargs):
         url = 'organizations/find'
