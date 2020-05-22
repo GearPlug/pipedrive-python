@@ -25,3 +25,7 @@ class Organizations(object):
     def get_organization_fields(self, **kwargs):
         url = 'organizationFields'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def find_organization_by_name(self, **kwargs):
+        url = 'organizations/find'
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
