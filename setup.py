@@ -7,7 +7,7 @@ def read(fname):
 
 
 setup(name='pipedrive-python-lib',
-      version='1.1.3',
+      version='1.1.4',
       description='API wrapper for Pipedrive written in Python',
       long_description=read('README.md'),
       long_description_content_type="text/markdown",
