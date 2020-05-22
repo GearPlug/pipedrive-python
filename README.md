@@ -1,6 +1,6 @@
 # pipedrive-python
 
-pipedrive-python is an API wrapper for Pipedrive written in Python.
+pipedrive-python is an API wrapper for [Pipedrive](https://www.pipedrive.com/) written in Python.
 
 ## Installing
 ```
