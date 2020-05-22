@@ -6,13 +6,13 @@ class Deals(object):
         url = 'deals/{}'.format(deal_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_deals(self, **kwargs):
+    def get_all_deals(self, params=None, **kwargs):
         url = 'deals'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
-    def get_all_deals_with_filter(self, filter_id, **kwargs):
+    def get_all_deals_with_filter(self, filter_id, params=None, **kwargs):
         url = 'deals?filter_id={}'.format(filter_id)
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_deal(self, data, **kwargs):
         url = 'deals'
@@ -34,9 +34,9 @@ class Deals(object):
         url = 'deals/{}'.format(deal_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_deals_by_name(self, **kwargs):
+    def get_deals_by_name(self, params=None, **kwargs):
         url = 'deals/find'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def get_deal_followers(self, deal_id, **kwargs):
         url = 'deals/{}/followers'.format(deal_id)
@@ -80,9 +80,9 @@ class Deals(object):
         url = 'deals/{}/products'.format(deal_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_deal_fields(self, **kwargs):
+    def get_deal_fields(self, params=None, **kwargs):
         url = 'dealFields'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def add_product_to_deal(self, deal_id, data, **kwargs):
         url = 'deals/{}/products'.format(deal_id)

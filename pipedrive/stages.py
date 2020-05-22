@@ -6,9 +6,9 @@ class Stages(object):
         url = 'stages/{}'.format(stage_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_stages(self, **kwargs):
+    def get_all_stages(self, params=None, **kwargs):
         url = 'stages'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def get_stage_deals(self, stage_id, **kwargs):
         url = 'stages/{}/deals'.format(stage_id)

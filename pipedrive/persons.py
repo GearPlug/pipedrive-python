@@ -6,13 +6,13 @@ class Persons(object):
         url = 'persons/{}'.format(person_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_all_persons(self, **kwargs):
+    def get_all_persons(self, params=None, **kwargs):
         url = 'persons'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
-    def get_persons_by_name(self, **kwargs):
+    def get_persons_by_name(self, params=None, **kwargs):
         url = 'persons/find'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def create_person(self, data, **kwargs):
         url = 'persons'
@@ -30,6 +30,6 @@ class Persons(object):
         url = 'persons/{}/deals'.format(person_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_person_fields(self, **kwargs):
+    def get_person_fields(self, params=None, **kwargs):
         url = 'personFields'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
