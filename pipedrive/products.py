@@ -14,10 +14,6 @@ class Products(object):
         url = 'products/search'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
-    def get_product_by_name(self, **kwargs):
-        url = 'products/find'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
-
     def create_product(self, data, **kwargs):
         url = 'products'
         return self._client._post(self._client.BASE_URL + url, json=data, **kwargs)
