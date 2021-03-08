@@ -10,6 +10,10 @@ class Products(object):
         url = 'products'
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
+    def search_products(self, params=None, **kwargs):
+        url = 'products/search'
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+
     def get_product_by_name(self, **kwargs):
         url = 'products/find'
         return self._client._get(self._client.BASE_URL + url, **kwargs)

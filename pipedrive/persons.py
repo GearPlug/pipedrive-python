@@ -10,6 +10,10 @@ class Persons(object):
         url = 'persons'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
+    def search_persons(self, params=None, **kwargs):
+        url = 'persons/search'
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+
     def get_persons_by_name(self, params=None, **kwargs):
         url = 'persons/find'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
