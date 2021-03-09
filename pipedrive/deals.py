@@ -34,8 +34,8 @@ class Deals(object):
         url = 'deals/{}'.format(deal_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
-    def get_deals_by_name(self, params=None, **kwargs):
-        url = 'deals/find'
+    def search_deals(self, params=None, **kwargs):
+        url = 'deals/search'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
     def get_deal_followers(self, deal_id, **kwargs):

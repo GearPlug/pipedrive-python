@@ -144,12 +144,12 @@ response = client.deals.duplicate_deal('DEAL_ID')
 response = client.deals.get_deal_details('DEAL_ID')
 ```
 
-#### Find deals by name
+#### Search deals
 ```
 params = {
     'term': ''
 }
-response = client.deals.get_deals_by_name(params=params)
+response = client.deals.search_deals(params=params)
 ```
 
 #### Get followers of a deal
@@ -295,6 +295,14 @@ response = client.organizations.get_organization('ORGANIZATION_ID')
 response = client.organizations.get_all_organizations()
 ```
 
+#### Search organizations
+```
+params = {
+    'term': ''
+}
+response = client.products.search_organizations(params=params)
+```
+
 #### Add organization
 ```
 data = {
@@ -335,12 +343,12 @@ response = client.persons.get_person('PERSON_ID')
 response = client.persons.get_all_persons()
 ```
 
-#### Get persons by name
+#### Search persons
 ```
 params = {
     'term': ''
 }
-response = client.persons.get_persons_by_name(params=params)
+response = client.persons.search_persons(params=params)
 ```
 
 #### Create person
@@ -407,12 +415,12 @@ response = client.products.get_product('PRODUCT_ID')
 response = client.products.get_all_products()
 ```
 
-#### Get products by name
+#### Search products
 ```
 params = {
     'term': ''
 }
-response = client.products.get_product_by_name(params=params)
+response = client.products.search_products(params=params)
 ```
 
 #### Create a product
