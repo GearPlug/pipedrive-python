@@ -35,6 +35,6 @@ class Persons(object):
         url = 'personFields'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
-    def search_persons_by_term(self, term, param, **kwargs):
+    def search_persons_by_term(self, params=None, **kwargs):
         url = 'persons/search'
-        return self._client._get(self._client.BASE_URL + url, term=term, param=param, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
