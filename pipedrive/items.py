@@ -4,4 +4,4 @@ class Items(object):
 
     def get_item_search(self, params=None, **kwargs):
         url = 'itemSearch'
-        return self._client._get(self._client.BASE_URL + url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
