@@ -1,3 +1,4 @@
+import time
 from urllib.parse import urlencode
 
 import requests
@@ -79,6 +80,44 @@ class Client:
     def _get(self, url, params=None, **kwargs):
         return self._request('get', url, params=params, **kwargs)
 
+    def _get_all(self, url, params=None, **kwargs):
+        more = True
+        start = 0
+        final_response = {}
+        data = []
+        while more:
+            if not params:
+                params = {"start": start}
+            else:
+                params['start'] = start
+            response = {}
+            try:
+                response = self._get(url, params, **kwargs)
+            except exceptions.BaseError:
+                # If something is already in final_response, return that, otherwise return the response.
+                if final_response:
+                    return final_response
+                return response
+
+            try:
+                data.extend(response['data'])
+                final_response = response
+                final_response['data'] = data
+            except KeyError:    # No 'data' key found
+                if final_response:
+                    return final_response
+                return response
+
+            try:
+                if response['additional_data']['pagination']['more_items_in_collection']:
+                    start = response['additional_data']['pagination']['next_start']
+                else:
+                    more = False
+            except KeyError:
+                more = False
+
+        return final_response
+
     def _post(self, url, **kwargs):
         return self._request('post', url, **kwargs)
 
@@ -99,7 +138,32 @@ class Client:
             _headers.update(headers)
         if params:
             _params.update(params)
-        return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
+
+        if 'number_of_retries' in kwargs:
+            number_of_retries = kwargs.get('number_of_retries', 0)
+            intervaltime = kwargs.get('intervaltime', 500)
+            del kwargs['number_of_retries']
+
+            if 'intervaltime' in kwargs:
+                del kwargs['intervaltime']
+
+            while number_of_retries > 0:
+                try:
+                    response = self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
+                    # No except, response is ok, return it.
+                    return response
+                except (exceptions.BadRequestError, exceptions.UnauthorizedError, exceptions.NotFoundError,
+                        exceptions.UnsupportedMediaTypeError, exceptions.UnprocessableEntityError,
+                        exceptions.NotImplementedError, exceptions.TooManyRequestsError):
+                    # Do not retry, just return the response.
+                    return response
+                except (exceptions.ForbiddenError, exceptions.InternalServerError, exceptions.ServiceUnavailableError,
+                        exceptions.UnknownError) as e:
+                    # Retry! There is hope.
+                    number_of_retries -= 1
+                    time.sleep(intervaltime / 1000.0)
+        else:
+            return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
 
     def _parse(self, response):
         status_code = response.status_code
