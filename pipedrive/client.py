@@ -139,14 +139,16 @@ class Client:
         if params:
             _params.update(params)
 
+        number_of_retries = kwargs.get('number_of_retries', 3)
+        intervaltime = kwargs.get('intervaltime', 500)
+
+        # remove number of retries and intervaltime from kwargs, otherwise the requests call will fail.
         if 'number_of_retries' in kwargs:
-            number_of_retries = kwargs.get('number_of_retries', 0)
-            intervaltime = kwargs.get('intervaltime', 500)
             del kwargs['number_of_retries']
+        if 'intervaltime' in kwargs:
+            del kwargs['intervaltime']
 
-            if 'intervaltime' in kwargs:
-                del kwargs['intervaltime']
-
+        if number_of_retries:
             while number_of_retries > 0:
                 try:
                     response = self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
@@ -158,7 +160,7 @@ class Client:
                     # Do not retry, just return the response.
                     return response
                 except (exceptions.ForbiddenError, exceptions.InternalServerError, exceptions.ServiceUnavailableError,
-                        exceptions.UnknownError) as e:
+                        exceptions.UnknownError):
                     # Retry! There is hope.
                     number_of_retries -= 1
                     time.sleep(intervaltime / 1000.0)
