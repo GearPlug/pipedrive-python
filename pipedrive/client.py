@@ -100,6 +100,9 @@ class Client:
                 return response
 
             try:
+                if response['data'] is None:
+                    return response
+
                 data.extend(response['data'])
                 final_response = response
                 final_response['data'] = data
@@ -156,9 +159,9 @@ class Client:
                     return response
                 except (exceptions.BadRequestError, exceptions.UnauthorizedError, exceptions.NotFoundError,
                         exceptions.UnsupportedMediaTypeError, exceptions.UnprocessableEntityError,
-                        exceptions.NotImplementedError, exceptions.TooManyRequestsError):
+                        exceptions.NotImplementedError, exceptions.TooManyRequestsError) as e:
                     # Do not retry, just return the response.
-                    return response
+                    raise e
                 except (exceptions.ForbiddenError, exceptions.InternalServerError, exceptions.ServiceUnavailableError,
                         exceptions.UnknownError):
                     # Retry! There is hope.
@@ -169,14 +172,28 @@ class Client:
 
     def _parse(self, response):
         status_code = response.status_code
-        if 'Content-Type' in response.headers and 'application/json' in response.headers['Content-Type']:
-            r = response.json()
+
+        if 'Content-Type' in response.headers:
+            content_type = response.headers['Content-Type']
         else:
-            return response.text
+            content_type = None
+
+        is_json = False
+
+        if content_type:
+            if content_type == 'application/json':
+                r = response.json()
+                is_json = True
+            elif 'text' in content_type:
+                r = response.text
+            else:
+                r = response.content
+        else:
+            r = response.text
 
         if not response.ok:
             error = None
-            if 'error' in r:
+            if is_json and 'error' in r:
                 error = r['error']
             if status_code == 400:
                 raise exceptions.BadRequestError(error, response)
