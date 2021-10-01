@@ -8,7 +8,7 @@ class Persons(object):
 
     def get_all_persons(self, params=None, **kwargs):
         url = 'persons'
-        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+        return self._client._get_all(self._client.BASE_URL + url, params=params, **kwargs)
 
     def get_persons_by_name(self, params=None, **kwargs):
         url = 'persons/find'
@@ -33,3 +33,7 @@ class Persons(object):
     def get_person_fields(self, params=None, **kwargs):
         url = 'personFields'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+
+    def get_person_emails(self, person_id, params=None, **kwargs):
+        url = 'persons/{}/mailMessages'.format(person_id)
+        return self._client._get_all(self._client.BASE_URL + url, params=params, **kwargs)

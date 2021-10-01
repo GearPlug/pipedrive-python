@@ -1,3 +1,4 @@
+import time
 from urllib.parse import urlencode
 
 import requests
@@ -79,6 +80,47 @@ class Client:
     def _get(self, url, params=None, **kwargs):
         return self._request('get', url, params=params, **kwargs)
 
+    def _get_all(self, url, params=None, **kwargs):
+        more = True
+        start = 0
+        final_response = {}
+        data = []
+        while more:
+            if not params:
+                params = {"start": start}
+            else:
+                params['start'] = start
+            response = {}
+            try:
+                response = self._get(url, params, **kwargs)
+            except exceptions.BaseError:
+                # If something is already in final_response, return that, otherwise return the response.
+                if final_response:
+                    return final_response
+                return response
+
+            try:
+                if response['data'] is None:
+                    return response
+
+                data.extend(response['data'])
+                final_response = response
+                final_response['data'] = data
+            except KeyError:    # No 'data' key found
+                if final_response:
+                    return final_response
+                return response
+
+            try:
+                if response['additional_data']['pagination']['more_items_in_collection']:
+                    start = response['additional_data']['pagination']['next_start']
+                else:
+                    more = False
+            except KeyError:
+                more = False
+
+        return final_response
+
     def _post(self, url, **kwargs):
         return self._request('post', url, **kwargs)
 
@@ -99,18 +141,59 @@ class Client:
             _headers.update(headers)
         if params:
             _params.update(params)
-        return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
+
+        number_of_retries = kwargs.get('number_of_retries', 3)
+        intervaltime = kwargs.get('intervaltime', 500)
+
+        # remove number of retries and intervaltime from kwargs, otherwise the requests call will fail.
+        if 'number_of_retries' in kwargs:
+            del kwargs['number_of_retries']
+        if 'intervaltime' in kwargs:
+            del kwargs['intervaltime']
+
+        if number_of_retries:
+            while number_of_retries > 0:
+                try:
+                    response = self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
+                    # No except, response is ok, return it.
+                    return response
+                except (exceptions.BadRequestError, exceptions.UnauthorizedError, exceptions.NotFoundError,
+                        exceptions.UnsupportedMediaTypeError, exceptions.UnprocessableEntityError,
+                        exceptions.NotImplementedError, exceptions.TooManyRequestsError) as e:
+                    # Do not retry, just return the response.
+                    raise e
+                except (exceptions.ForbiddenError, exceptions.InternalServerError, exceptions.ServiceUnavailableError,
+                        exceptions.UnknownError):
+                    # Retry! There is hope.
+                    number_of_retries -= 1
+                    time.sleep(intervaltime / 1000.0)
+        else:
+            return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
 
     def _parse(self, response):
         status_code = response.status_code
-        if 'Content-Type' in response.headers and 'application/json' in response.headers['Content-Type']:
-            r = response.json()
+
+        if 'Content-Type' in response.headers:
+            content_type = response.headers['Content-Type']
         else:
-            return response.text
+            content_type = None
+
+        is_json = False
+
+        if content_type:
+            if content_type == 'application/json':
+                r = response.json()
+                is_json = True
+            elif 'text' in content_type:
+                r = response.text
+            else:
+                r = response.content
+        else:
+            r = response.text
 
         if not response.ok:
             error = None
-            if 'error' in r:
+            if is_json and 'error' in r:
                 error = r['error']
             if status_code == 400:
                 raise exceptions.BadRequestError(error, response)
