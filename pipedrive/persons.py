@@ -10,6 +10,7 @@ class Persons(object):
         url = 'persons'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
+    #Deprecated Enpoint, rather use /persons/search instead
     def get_persons_by_name(self, params=None, **kwargs):
         url = 'persons/find'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
@@ -24,7 +25,7 @@ class Persons(object):
 
     def delete_person(self, person_id, **kwargs):
         url = 'persons/{}'.format(person_id)
-        return self._client._delete(url, **kwargs)
+        return self._client._delete(self._client.BASE_URL + url, **kwargs)
 
     def get_person_deals(self, person_id, **kwargs):
         url = 'persons/{}/deals'.format(person_id)
@@ -32,4 +33,8 @@ class Persons(object):
 
     def get_person_fields(self, params=None, **kwargs):
         url = 'personFields'
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+
+    def search_persons_by_term(self, params=None, **kwargs):
+        url = 'persons/search'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)

@@ -6,13 +6,14 @@ from pipedrive import exceptions
 from pipedrive.activities import Activities
 from pipedrive.deals import Deals
 from pipedrive.filters import Filters
+from pipedrive.leads import Leads
+from pipedrive.items import Items
 from pipedrive.notes import Notes
 from pipedrive.organizations import Organizations
 from pipedrive.persons import Persons
 from pipedrive.pipelines import Pipelines
 from pipedrive.products import Products
 from pipedrive.recents import Recents
-from pipedrive.stages import Stages
 from pipedrive.users import Users
 from pipedrive.webhooks import Webhooks
 
@@ -29,13 +30,14 @@ class Client:
         self.activities = Activities(self)
         self.deals = Deals(self)
         self.filters = Filters(self)
+        self.leads = Leads(self)
+        self.items = Items(self)
         self.notes = Notes(self)
         self.organizations = Organizations(self)
         self.persons = Persons(self)
         self.pipelines = Pipelines(self)
         self.products = Products(self)
         self.recents = Recents(self)
-        self.stages = Stages(self)
         self.users = Users(self)
         self.webhooks = Webhooks(self)
 
