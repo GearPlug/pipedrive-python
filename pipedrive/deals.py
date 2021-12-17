@@ -38,11 +38,6 @@ class Deals(object):
         url = 'deals/search'
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
 
-    #Deprecated, rather look at search_deals
-    def get_deals_by_name(self, params=None, **kwargs):
-        url = 'deals/find'
-        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
-
     def get_deal_followers(self, deal_id, **kwargs):
         url = 'deals/{}/followers'.format(deal_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
