@@ -4,7 +4,7 @@ class Webhooks(object):
 
     def get_hooks_subscription(self, **kwargs):
         url = "webhooks"
-        return self._client._get(url, **kwargs)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def create_hook_subscription(self, subscription_url, event_action, event_object, **kwargs):
         url = "webhooks"
