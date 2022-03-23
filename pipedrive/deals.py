@@ -87,3 +87,7 @@ class Deals(object):
     def add_product_to_deal(self, deal_id, data, **kwargs):
         url = 'deals/{}/products'.format(deal_id)
         return self._client._post(self._client.BASE_URL + url, json=data, **kwargs)
+
+    def get_deal_updates(self, deal_id, **kwargs):
+        url = 'deals/{}/flow'.format(deal_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)

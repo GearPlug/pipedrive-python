@@ -202,6 +202,11 @@ response = client.deals.get_deal_products('DEAL_ID')
 response = client.deals.get_deal_fields()
 ```
 
+#### Get updates of a deal
+```
+response = client.deals.get_deal_updates('DEAL_ID')
+```
+
 ### Filters
 
 API docs: https://developers.pipedrive.com/docs/api/v1/#!/Filters
