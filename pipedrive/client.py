@@ -16,7 +16,7 @@ from pipedrive.products import Products
 from pipedrive.recents import Recents
 from pipedrive.users import Users
 from pipedrive.webhooks import Webhooks
-
+from pipedrive.stages import Stages
 
 class Client:
     BASE_URL = "https://api.pipedrive.com/"
