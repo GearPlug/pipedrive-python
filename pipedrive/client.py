@@ -40,6 +40,7 @@ class Client:
         self.recents = Recents(self)
         self.users = Users(self)
         self.webhooks = Webhooks(self)
+        self.stages = Stages(self)
 
         if domain:
             if not domain.endswith("/"):
