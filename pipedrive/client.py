@@ -15,6 +15,7 @@ from pipedrive.pipelines import Pipelines
 from pipedrive.products import Products
 from pipedrive.stages import Stages
 from pipedrive.recents import Recents
+from pipedrive.subscriptions import Subscriptions
 from pipedrive.users import Users
 from pipedrive.webhooks import Webhooks
 
@@ -38,6 +39,7 @@ class Client:
         self.persons = Persons(self)
         self.pipelines = Pipelines(self)
         self.products = Products(self)
+        self.subscriptions = Subscriptions(self)
         self.recents = Recents(self)
         self.stages = Stages(self)
         self.users = Users(self)
