@@ -3,13 +3,13 @@ class Pipelines(object):
         self._client = client
 
     def get_pipeline(self, pipeline_id, **kwargs):
-        url = 'pipelines/{}'.format(pipeline_id)
+        url = "pipelines/{}".format(pipeline_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def get_all_pipelines(self, **kwargs):
-        url = 'pipelines'
+        url = "pipelines"
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
     def get_pipeline_deals(self, pipeline_id, **kwargs):
-        url = 'pipelines/{}/deals'.format(pipeline_id)
+        url = "pipelines/{}/deals".format(pipeline_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)

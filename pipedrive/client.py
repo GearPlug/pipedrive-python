@@ -116,16 +116,11 @@ class Client:
             _headers.update(headers)
         if params:
             _params.update(params)
-        return self._parse(
-            requests.request(method, url, headers=_headers, params=_params, **kwargs)
-        )
+        return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
 
     def _parse(self, response):
         status_code = response.status_code
-        if (
-            "Content-Type" in response.headers
-            and "application/json" in response.headers["Content-Type"]
-        ):
+        if "Content-Type" in response.headers and "application/json" in response.headers["Content-Type"]:
             r = response.json()
         else:
             return response.text
