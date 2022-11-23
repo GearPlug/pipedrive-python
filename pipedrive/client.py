@@ -62,15 +62,27 @@ class Client:
         return self.OAUTH_BASE_URL + "authorize?" + urlencode(params)
 
     def exchange_code(self, redirect_uri, code):
-        data = {"grant_type": "authorization_code", "code": code, "redirect_uri": redirect_uri}
-        return self._post(self.OAUTH_BASE_URL + "token", data=data, auth=(self.client_id, self.client_secret))
+        data = {
+            "grant_type": "authorization_code",
+            "code": code,
+            "redirect_uri": redirect_uri,
+        }
+        return self._post(
+            self.OAUTH_BASE_URL + "token",
+            data=data,
+            auth=(self.client_id, self.client_secret),
+        )
 
     def refresh_token(self, refresh_token):
         data = {
             "grant_type": "refresh_token",
             "refresh_token": refresh_token,
         }
-        return self._post(self.OAUTH_BASE_URL + "token", data=data, auth=(self.client_id, self.client_secret))
+        return self._post(
+            self.OAUTH_BASE_URL + "token",
+            data=data,
+            auth=(self.client_id, self.client_secret),
+        )
 
     def set_access_token(self, access_token):
         self.access_token = access_token
@@ -87,6 +99,9 @@ class Client:
     def _put(self, url, **kwargs):
         return self._request("put", url, **kwargs)
 
+    def _patch(self, url, **kwargs):
+        return self._request("patch", url, **kwargs)
+
     def _delete(self, url, **kwargs):
         return self._request("delete", url, **kwargs)
 
@@ -101,11 +116,16 @@ class Client:
             _headers.update(headers)
         if params:
             _params.update(params)
-        return self._parse(requests.request(method, url, headers=_headers, params=_params, **kwargs))
+        return self._parse(
+            requests.request(method, url, headers=_headers, params=_params, **kwargs)
+        )
 
     def _parse(self, response):
         status_code = response.status_code
-        if "Content-Type" in response.headers and "application/json" in response.headers["Content-Type"]:
+        if (
+            "Content-Type" in response.headers
+            and "application/json" in response.headers["Content-Type"]
+        ):
             r = response.json()
         else:
             return response.text
