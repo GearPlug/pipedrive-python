@@ -54,7 +54,7 @@ client.set_api_token('API_TOKEN')
 
 ### Activities 
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Activities
+API docs: https://developers.pipedrive.com/docs/api/v1/Activities
 
 #### Get an activity
 ```
@@ -96,7 +96,7 @@ response = client.activities.get_activity_fields()
 
 ### Deals
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Deals
+API docs: https://developers.pipedrive.com/docs/api/v1/Deals
 
 #### Get a deal
 ```
@@ -209,7 +209,7 @@ response = client.deals.get_deal_updates('DEAL_ID')
 
 ### Filters
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Filters
+API docs: https://developers.pipedrive.com/docs/api/v1/Filters
 
 #### Get a filter
 ```
@@ -248,7 +248,7 @@ response = client.filters.delete_filter('FILTER_ID')
 
 ### Notes
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Notes
+API docs: https://developers.pipedrive.com/docs/api/v1/Notes
 
 #### Get a note
 ```
@@ -288,7 +288,7 @@ response = client.notes.get_note_fields()
 
 ### Organizations
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Organizations
+API docs: https://developers.pipedrive.com/docs/api/v1/Organizations
 
 #### Get an organization
 ```
@@ -336,7 +336,7 @@ response = client.organizations.get_organization_fields()
 
 ### Persons 
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Persons
+API docs: https://developers.pipedrive.com/docs/api/v1/Persons
 
 #### Get a person
 ```
@@ -389,7 +389,7 @@ response = client.persons.get_person_fields()
 
 ### Pipelines
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Pipelines
+API docs: https://developers.pipedrive.com/docs/api/v1/Pipelines
 
 #### Get a pipeline
 ```
@@ -408,7 +408,7 @@ response = client.pipelines.get_pipeline_deals()
 
 ### Products
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Products
+API docs: https://developers.pipedrive.com/docs/api/v1/Products
 
 #### Get a product
 ```
@@ -471,7 +471,7 @@ response = client.recents.get_recent_changes(params=params)
 
 ### Users 
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Users
+API docs: https://developers.pipedrive.com/docs/api/v1/Users
 
 #### Get an user
 ```
@@ -490,7 +490,7 @@ response = client.users.get_me()
 
 ### Webhook 
 
-API docs: https://developers.pipedrive.com/docs/api/v1/#!/Webhooks
+API docs: https://developers.pipedrive.com/docs/api/v1/Webhooks
 
 #### Get webhooks
 ```
