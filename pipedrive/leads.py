@@ -25,3 +25,7 @@ class Leads(object):
     def get_lead_details(self, lead_id, **kwargs):
         url = "leads/{}".format(lead_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def search_leads(self, params=None, **kwargs):
+        url = "leads/search"
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
