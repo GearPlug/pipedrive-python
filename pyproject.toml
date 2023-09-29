@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pipedrive-python-lib"
-version = "1.2.2"
+version = "1.2.3"
 description = "API wrapper for Pipedrive written in Python"
 authors = ["Miguel Ferrer <ingferrermiguel@gmail.com>"]
 license = "MIT"
