@@ -1,5 +1,5 @@
 # pipedrive-python
-![](https://img.shields.io/badge/version-1.2.3-success) ![](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10%20|%203.11-4B8BBE?logo=python&logoColor=white)   
+![](https://img.shields.io/badge/version-1.2.3-success) ![](https://img.shields.io/badge/Python-3.8%20|%203.9%20|%203.10%20|%203.11-4B8BBE?logo=python&logoColor=white)
 *pipedrive-python* is an API wrapper for [Pipedrive](https://www.pipedrive.com/) written in Python.
 
 ## Installing
@@ -52,7 +52,7 @@ client = Client(domain='https://companydomain.pipedrive.com/')
 client.set_api_token('API_TOKEN')
 ```
 
-### Activities 
+### Activities
 
 API docs: https://developers.pipedrive.com/docs/api/v1/Activities
 
@@ -224,7 +224,7 @@ response = client.filters.get_all_filters()
 #### Create filter
 ```python
 data = {
-    'name': '', 
+    'name': '',
     'conditions': {},
     'type': ''
 }
@@ -234,7 +234,7 @@ response = client.filters.create_filter(data)
 #### Update filter
 ```python
 data = {
-    'name': '', 
+    'name': '',
     'conditions': {},
     'type': ''
 }
@@ -334,7 +334,12 @@ response = client.organizations.delete_organization('ORGANIZATION_ID')
 response = client.organizations.get_organization_fields()
 ```
 
-### Persons 
+#### Get organization activities
+```python
+response = client.organizations.get_organization_activities('ORGANIZATION_ID')
+```
+
+### Persons
 
 API docs: https://developers.pipedrive.com/docs/api/v1/Persons
 
@@ -482,7 +487,7 @@ params = {
 }
 response = client.leads.search_leads(params=params)
 ```
-### Users 
+### Users
 
 API docs: https://developers.pipedrive.com/docs/api/v1/Users
 
@@ -501,7 +506,7 @@ response = client.users.get_all_users()
 response = client.users.get_me()
 ```
 
-### Webhook 
+### Webhook
 
 API docs: https://developers.pipedrive.com/docs/api/v1/Webhooks
 
