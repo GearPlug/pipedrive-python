@@ -33,3 +33,8 @@ class Organizations(object):
     def get_organization_persons(self, organization_id, params=None, **kwargs):
         url = "organizations/{}/persons".format(organization_id)
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+    
+    def add_follower_to_organization(self, org_id, user_id, **kwargs):
+        url = "organizations/{}/followers".format(org_id)
+        data = {"user_id": user_id}
+        return self._post(self.BASE_URL+url, json=data, **kwargs)
