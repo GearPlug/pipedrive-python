@@ -40,5 +40,5 @@ class Persons(object):
     
     def add_follower_to_person(self, person_id, user_id, **kwargs):
         url = "persons/{}/followers".format(person_id)
-        data = {'user_id': user_id}
+        data = {"user_id": user_id}
         return self.client._post(self.BASE_URL+url, json=data, **kwargs)
