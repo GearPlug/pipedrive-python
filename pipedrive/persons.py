@@ -37,3 +37,8 @@ class Persons(object):
     def get_person_activities(self, person_id, **kwargs):
         url = "persons/{}/activities".format(person_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
+    
+    def add_follower_to_person(self, person_id, user_id, **kwargs):
+        url = "persons/{}/followers".format(person_id)
+        data = {'user_id': user_id}
+        return self.client._post(self.BASE_URL+url, json=data, **kwargs)
