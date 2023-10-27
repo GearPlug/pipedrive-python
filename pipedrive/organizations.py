@@ -33,6 +33,10 @@ class Organizations(object):
     def get_organization_persons(self, organization_id, params=None, **kwargs):
         url = "organizations/{}/persons".format(organization_id)
         return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
+
+    def get_organization_activities(self, organization_id, params=None, **kwargs):
+        url = "organizations/{}/activities".format(organization_id)
+        return self._client._get(self._client.BASE_URL + url, params=params, **kwargs)
     
     def add_follower_to_organization(self, org_id, user_id, **kwargs):
         url = "organizations/{}/followers".format(org_id)
