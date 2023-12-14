@@ -5,6 +5,7 @@ import requests
 from pipedrive import exceptions
 from pipedrive.activities import Activities
 from pipedrive.deals import Deals
+from pipedrive.projects import Projects
 from pipedrive.filters import Filters
 from pipedrive.leads import Leads
 from pipedrive.items import Items
@@ -31,6 +32,7 @@ class Client:
         self.api_token = None
         self.activities = Activities(self)
         self.deals = Deals(self)
+        self.projects = Projects(self)
         self.filters = Filters(self)
         self.leads = Leads(self)
         self.items = Items(self)
