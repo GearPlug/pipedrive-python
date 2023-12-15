@@ -52,7 +52,7 @@ class Client:
                 domain += "/"
             self.BASE_URL = domain + "v1/"
         else:
-            self.BASE_URL = "v1/"
+            self.BASE_URL = self.BASE_URL + "v1/"
 
 
     def authorization_url(self, redirect_uri, state=None):
