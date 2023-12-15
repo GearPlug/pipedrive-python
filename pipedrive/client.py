@@ -51,6 +51,9 @@ class Client:
             if not domain.endswith("/"):
                 domain += "/"
             self.BASE_URL = domain + "v1/"
+        else:
+            self.BASE_URL = "v1/"
+
 
     def authorization_url(self, redirect_uri, state=None):
         params = {
