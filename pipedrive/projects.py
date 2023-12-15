@@ -66,3 +66,12 @@ class Projects(object):
         url = "projects/boards/{}".format(board_id)
         return self._client._get(self._client.BASE_URL + url, **kwargs)
 
+    def get_project_phases(self, board_id, **kwargs):
+        url = "projects/phases?board_id={}".format(board_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+    def get_phase(self, phase_id, **kwargs):
+        url = "projects/phases/{}".format(phase_id)
+        return self._client._get(self._client.BASE_URL + url, **kwargs)
+
+
